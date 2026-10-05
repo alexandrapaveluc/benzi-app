@@ -28,10 +28,10 @@ def cele_mai_apropiate(benzinarii, lat, lon, cate, brand=None):
     if brand:
         benzinarii = [b for b in benzinarii if b["brand"].lower() == brand.lower()]
 
-    for b in benzinarii:
-        b["distanta"] = distanta_km(lat, lon, b["lat"], b["lon"])
+    # Facem copii, ca sa nu modificam lista originala
+    cu_distanta = [dict(b, distanta=distanta_km(lat, lon, b["lat"], b["lon"])) for b in benzinarii]
 
-    return sorted(benzinarii, key=lambda b: b["distanta"])[:cate]
+    return sorted(cu_distanta, key=lambda b: b["distanta"])[:cate]
 
 
 def adauga_preturi(apropiate, lat, lon):
@@ -42,6 +42,11 @@ def adauga_preturi(apropiate, lat, lon):
         print(f"Nu am putut descarca preturile. Eroare: {e}")
         return
 
+    potriveste_preturi(apropiate, statii_cu_preturi)
+
+
+def potriveste_preturi(apropiate, statii_cu_preturi):
+    """Leaga preturile de benzinariile noastre dupa pozitie."""
     for b in apropiate:
         b["preturi"] = {}
         for s in statii_cu_preturi:
@@ -60,7 +65,7 @@ def afiseaza(apropiate, carburant):
         print(linie)
 
 
-def creeaza_harta(apropiate, lat, lon, descriere, carburant):
+def construieste_harta(apropiate, lat, lon, descriere, carburant):
     harta = folium.Map(location=[lat, lon], zoom_start=14)
 
     folium.Marker(
@@ -94,7 +99,11 @@ def creeaza_harta(apropiate, lat, lon, descriere, carburant):
     # Incadram harta astfel incat sa se vada toate punctele
     puncte = [[lat, lon]] + [[b["lat"], b["lon"]] for b in apropiate]
     harta.fit_bounds(puncte, padding=(30, 30))
+    return harta
 
+
+def creeaza_harta(apropiate, lat, lon, descriere, carburant):
+    harta = construieste_harta(apropiate, lat, lon, descriere, carburant)
     harta.save(FISIER_HARTA)
 
 

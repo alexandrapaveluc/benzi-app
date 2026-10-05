@@ -1,3 +1,6 @@
 requests>=2.31
 folium>=0.15
 truststore>=0.9
+streamlit>=1.50
+streamlit-folium>=0.22
+pandas>=2.0
