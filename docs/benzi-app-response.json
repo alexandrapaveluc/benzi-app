@@ -1,0 +1,430 @@
+{
+  "location": {
+    "latitude": 44.8565,
+    "longitude": 24.8692
+  },
+  "radius_km": 10,
+  "price_data_updated_at": "2026-10-05T17:22:03.371621+00:00",
+  "stations": [
+    {
+      "station_id": "1eda2e2d611d",
+      "name": "Lukoil - Pitesti",
+      "brand": "Lukoil",
+      "address": "str. Depozitelor",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.865709,
+      "longitude": 24.878858,
+      "distance_km": 1.28,
+      "prices": {
+        "gasoline": {
+          "standard": 10.08,
+          "premium": 10.65
+        },
+        "diesel": {
+          "standard": 10.95,
+          "premium": 11.84
+        }
+      }
+    },
+    {
+      "station_id": "87cd51bc2d62",
+      "name": "Petrom - Pitesti",
+      "brand": "Petrom",
+      "address": "Str. Abatorului nr. 6, 110040",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.8524,
+      "longitude": 24.88562,
+      "distance_km": 1.37,
+      "prices": {
+        "gasoline": {
+          "standard": 10.05,
+          "premium": null
+        },
+        "diesel": {
+          "standard": 10.91,
+          "premium": 11.76
+        }
+      }
+    },
+    {
+      "station_id": "2ba4d0caa1bb",
+      "name": "Rompetrol - Pitesti",
+      "brand": "Rompetrol",
+      "address": "Calea Bucuresti",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.86739,
+      "longitude": 24.88353,
+      "distance_km": 1.66,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "c0976ea04072",
+      "name": "OMV - Pitesti",
+      "brand": "OMV",
+      "address": "Calea Bucuresti 40, 110133",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.86736,
+      "longitude": 24.884,
+      "distance_km": 1.68,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.86
+        }
+      }
+    },
+    {
+      "station_id": "cac642f548f7",
+      "name": "Petrom - Pitesti",
+      "brand": "Petrom",
+      "address": "Calea Campulung nr. 1, 110147",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.86812,
+      "longitude": 24.88335,
+      "distance_km": 1.71,
+      "prices": {
+        "gasoline": {
+          "standard": 10.05,
+          "premium": 10.53
+        },
+        "diesel": {
+          "standard": 10.91,
+          "premium": 11.76
+        }
+      }
+    },
+    {
+      "station_id": "e619bfe74138",
+      "name": "Rompetrol - Pitesti",
+      "brand": "Rompetrol",
+      "address": "Str. Fratii Golesti56-58-60",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.846207,
+      "longitude": 24.886503,
+      "distance_km": 1.78,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "5918f955a03d",
+      "name": "Mol - Pitesti",
+      "brand": "Mol",
+      "address": "Str. Republicii, Nr. 220, 110177",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.84605,
+      "longitude": 24.88827,
+      "distance_km": 1.9,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "4ab0e95089ea",
+      "name": "Mol - Pitesti",
+      "brand": "Mol",
+      "address": "Bdul. Nicolae Balcescu, Nr. 85, 110087",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.87095,
+      "longitude": 24.85296,
+      "distance_km": 2.05,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "eb6a054f4831",
+      "name": "Rompetrol - Pitesti",
+      "brand": "Rompetrol",
+      "address": "Calea Craiovei nr.127",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.839069,
+      "longitude": 24.882975,
+      "distance_km": 2.22,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "4f8fd582dcdf",
+      "name": "Lukoil - Pitesti",
+      "brand": "Lukoil",
+      "address": "Calea Craiovei",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.837369,
+      "longitude": 24.882403,
+      "distance_km": 2.37,
+      "prices": {
+        "gasoline": {
+          "standard": 10.08,
+          "premium": 10.65
+        },
+        "diesel": {
+          "standard": 10.95,
+          "premium": 11.84
+        }
+      }
+    },
+    {
+      "station_id": "9fc653a1e5a6",
+      "name": "Petrom - Bradu",
+      "brand": "Petrom",
+      "address": "Sos. Pitesti - Craiova DN 65, 117140",
+      "city": "Bradu",
+      "county": "Arges",
+      "latitude": 44.8316,
+      "longitude": 24.88371,
+      "distance_km": 3,
+      "prices": {
+        "gasoline": {
+          "standard": 10.05,
+          "premium": 10.53
+        },
+        "diesel": {
+          "standard": 10.91,
+          "premium": 11.76
+        }
+      }
+    },
+    {
+      "station_id": "deddb8506123",
+      "name": "OMV - Pitesti",
+      "brand": "OMV",
+      "address": "Str. Nicolae Balcescu nr. 186, 110101",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.88224,
+      "longitude": 24.83389,
+      "distance_km": 3.99,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.86
+        }
+      }
+    },
+    {
+      "station_id": "5b18268da90a",
+      "name": "Petrom - Albota",
+      "brand": "Petrom",
+      "address": "nr. 465 Bis 465 Bis",
+      "city": "Albota",
+      "county": "Arges",
+      "latitude": 44.8192,
+      "longitude": 24.8745,
+      "distance_km": 4.17,
+      "prices": {
+        "gasoline": {
+          "standard": 10.05,
+          "premium": 10.53
+        },
+        "diesel": {
+          "standard": 10.91,
+          "premium": 11.76
+        }
+      }
+    },
+    {
+      "station_id": "5f8f6c3d49ff",
+      "name": "Lukoil - Bradu",
+      "brand": "Lukoil",
+      "address": "Bradu",
+      "city": "Bradu",
+      "county": "Arges",
+      "latitude": 44.823673,
+      "longitude": 24.899733,
+      "distance_km": 4.37,
+      "prices": {
+        "gasoline": {
+          "standard": 10.08,
+          "premium": 10.65
+        },
+        "diesel": {
+          "standard": 10.95,
+          "premium": 11.84
+        }
+      }
+    },
+    {
+      "station_id": "eb5008004d5d",
+      "name": "Lukoil - Maracineni",
+      "brand": "Lukoil",
+      "address": "Maracineni",
+      "city": "Maracineni",
+      "county": "Arges",
+      "latitude": 44.895912,
+      "longitude": 24.873996,
+      "distance_km": 4.4,
+      "prices": {
+        "gasoline": {
+          "standard": 10.08,
+          "premium": 10.65
+        },
+        "diesel": {
+          "standard": 10.95,
+          "premium": null
+        }
+      }
+    },
+    {
+      "station_id": "44723f8627cd",
+      "name": "Rompetrol - Pitesti",
+      "brand": "Rompetrol",
+      "address": "Bd. Nicolae Balcescu",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.884945,
+      "longitude": 24.827646,
+      "distance_km": 4.55,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "bff548fbc8eb",
+      "name": "Mol - Bascov",
+      "brand": "Mol",
+      "address": "Bdul Nicolae Balcescu",
+      "city": "Bascov",
+      "county": "Arges",
+      "latitude": 44.885855,
+      "longitude": 24.82509,
+      "distance_km": 4.77,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "065f358cd095",
+      "name": "Mol - Pitesti",
+      "brand": "Mol",
+      "address": "B-dul Nicolae Balcescu, Nr. 206, 110329",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.88669,
+      "longitude": 24.82517,
+      "distance_km": 4.83,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.88
+        }
+      }
+    },
+    {
+      "station_id": "90a5eef6ed19",
+      "name": "OMV - Pitesti",
+      "brand": "OMV",
+      "address": "Str. Petrochimistilor 51, 110181",
+      "city": "Pitesti",
+      "county": "Arges",
+      "latitude": 44.82527,
+      "longitude": 24.91514,
+      "distance_km": 5.02,
+      "prices": {
+        "gasoline": {
+          "standard": 10.11,
+          "premium": 10.68
+        },
+        "diesel": {
+          "standard": 10.97,
+          "premium": 11.86
+        }
+      }
+    },
+    {
+      "station_id": "b168bda127ef",
+      "name": "Lukoil - Bascov",
+      "brand": "Lukoil",
+      "address": "Bascov",
+      "city": "Bascov",
+      "county": "Arges",
+      "latitude": 44.888483,
+      "longitude": 24.823334,
+      "distance_km": 5.07,
+      "prices": {
+        "gasoline": {
+          "standard": 10.08,
+          "premium": 10.65
+        },
+        "diesel": {
+          "standard": 10.95,
+          "premium": null
+        }
+      }
+    }
+  ]
+}
