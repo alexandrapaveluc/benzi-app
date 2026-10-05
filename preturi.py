@@ -1,10 +1,12 @@
+import argparse
 import json
-import sys
 import time
 import xml.etree.ElementTree as ET
 
 import requests
 import truststore
+
+from geocodare import citeste_locatie
 
 # Serverul nu trimite certificatul intermediar corect, asa ca folosim
 # certificatele sistemului de operare (care il pot completa singure)
@@ -32,9 +34,8 @@ headers = {
     "User-Agent": "benzi-app/1.0 (https://github.com/alexandrapaveluc/benzi-app)"
 }
 
-# Centrul Bucurestiului, daca nu se dau coordonate
-LAT_IMPLICIT = 44.4268
-LON_IMPLICIT = 26.1025
+# Locul folosit daca nu se da nimic
+LOCATIE_IMPLICITA = ["Bucuresti"]
 
 
 def text(element, cale):
@@ -101,14 +102,24 @@ def afiseaza_cele_mai_ieftine(statii):
 
 
 def main():
-    # Folosire: python preturi.py [lat] [lon] [raza_in_metri]
-    lat = float(sys.argv[1]) if len(sys.argv) > 1 else LAT_IMPLICIT
-    lon = float(sys.argv[2]) if len(sys.argv) > 2 else LON_IMPLICIT
-    raza = int(sys.argv[3]) if len(sys.argv) > 3 else RAZA_MAXIMA
+    parser = argparse.ArgumentParser(description="Preturile la carburanti intr-o zona.")
+    parser.add_argument("locatie", nargs="*",
+                        help='oras/adresa ("Cluj-Napoca") sau coordonate (44.43 26.10)')
+    parser.add_argument("--raza", type=int, default=RAZA_MAXIMA,
+                        help=f"raza in metri (maxim {RAZA_MAXIMA})")
+    args = parser.parse_args()
 
+    raza = args.raza
     if raza > RAZA_MAXIMA:
         print(f"Raza maxima acceptata de server este {RAZA_MAXIMA} m, folosesc {RAZA_MAXIMA}.")
         raza = RAZA_MAXIMA
+
+    locatie = citeste_locatie(args.locatie or LOCATIE_IMPLICITA)
+    if locatie is None:
+        print("Nu am gasit locatia. Incearca alt nume sau da coordonatele.")
+        return
+    lat, lon, descriere = locatie
+    print(f"Caut in jurul: {descriere} (raza {raza} m)\n")
 
     try:
         statii = descarca_preturi(lat, lon, raza)
