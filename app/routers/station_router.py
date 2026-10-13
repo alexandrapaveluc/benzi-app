@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 
+from app.clients.monitorul_preturilor_client import PriceProviderError
 from app.config import settings
 from app.models.location import UserLocation
 from app.models.station_response import StationSearchResponse
@@ -35,7 +36,7 @@ def get_nearby_stations(
     radius_km: float = Query(
         settings.DEFAULT_RADIUS_KM,
         gt=0,
-        le=50,
+        le=settings.MAX_RADIUS_KM,
         description="Raza de cautare in kilometri",
     ),
 ):
@@ -50,7 +51,7 @@ def get_nearby_stations(
             radius_km=radius_km,
         )
 
-    except RuntimeError as error:
+    except PriceProviderError as error:
         raise HTTPException(
             status_code=502,
             detail=str(error),

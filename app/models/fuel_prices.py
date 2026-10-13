@@ -14,3 +14,4 @@ class DieselPrices(BaseModel):
 class FuelPrices(BaseModel):
     gasoline: GasolinePrices
     diesel: DieselPrices
+    lpg: float | None = None

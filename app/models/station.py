@@ -16,4 +16,6 @@ class FuelStation(BaseModel):
 
     distance_km: float = Field(ge=0)
 
+    price_updated_at: str | None = None
+
     prices: FuelPrices
