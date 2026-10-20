@@ -10,10 +10,16 @@ class FuelStation(BaseModel):
     address: str | None = None
     city: str | None = None
     county: str | None = None
+    country: str | None = None
 
     latitude: float
     longitude: float
 
     distance_km: float = Field(ge=0)
+
+    duration_minutes: float | None = Field(
+        default=None,
+        ge=0,
+    )
 
     prices: FuelPrices

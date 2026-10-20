@@ -7,15 +7,22 @@ load_dotenv()
 
 
 class Settings:
-    PRET_CARBURANT_BASE_URL: str = os.getenv(
-        "PRET_CARBURANT_BASE_URL",
-        "https://pretcarburant.ro/api/v1",
+
+    # Google Maps Platform
+    GOOGLE_MAPS_API_KEY: str = os.getenv(
+        "GOOGLE_MAPS_API_KEY",
+        "",
     )
 
-    PRET_CARBURANT_API_KEY: str | None = os.getenv(
-        "PRET_CARBURANT_API_KEY"
+    GOOGLE_PLACES_URL: str = (
+        "https://places.googleapis.com/v1/places:searchNearby"
     )
 
+    GOOGLE_ROUTES_MATRIX_URL: str = (
+        "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix"
+    )
+
+    # Configurare aplicație
     DEFAULT_RADIUS_KM: float = float(
         os.getenv("DEFAULT_RADIUS_KM", "10")
     )

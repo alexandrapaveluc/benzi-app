@@ -435,3 +435,107 @@ Aplicația are în prezent un backend funcțional care poate:
 * returna rezultatele prin REST API;
 * fi testat prin Swagger;
 * fi accesat public prin Render.
+
+## Integrarea cu Google Maps
+
+Fuel Finder folosește Google Maps Platform ca sursă externă de date.
+
+### Google Places API (New)
+
+Google Places API este folosit pentru identificarea benzinăriilor din apropierea utilizatorului.
+
+Pentru fiecare benzinărie, aplicația poate obține:
+
+- numele benzinăriei;
+- adresa;
+- orașul;
+- județul;
+- țara;
+- coordonatele geografice;
+- prețurile disponibile pentru carburanți;
+- data și ora actualizării prețurilor.
+
+Prețurile carburanților sunt preluate din informațiile `fuelOptions` furnizate de Google Places.
+
+Dacă Google nu furnizează un anumit preț pentru o benzinărie sau pentru un anumit tip de carburant, aplicația păstrează valoarea ca indisponibilă (`null`). Aplicația nu estimează și nu inventează prețuri.
+
+### Google Routes API
+
+Google Routes API este folosit pentru calcularea:
+
+- distanței reale de condus până la fiecare benzinărie;
+- duratei estimate a deplasării.
+
+Benzinăriile sunt sortate după distanța rutieră, astfel încât cea mai apropiată benzinărie să apară prima în rezultat.
+
+Dacă Google Routes nu poate furniza temporar o rută, aplicația poate folosi ca alternativă distanța geografică dintre utilizator și benzinărie.
+
+## Prețurile carburanților
+
+Aplicația gestionează următoarele categorii:
+
+- benzină standard;
+- benzină premium;
+- motorină standard;
+- motorină premium.
+
+Tipurile de carburant furnizate de Google sunt transformate în aceste categorii pentru a păstra un format simplu și consistent în API.
+
+Pentru fiecare preț disponibil sunt păstrate:
+
+- valoarea prețului;
+- nivelul prețului;
+- data și ora ultimei actualizări furnizate de Google.
+
+## Clasificarea prețurilor
+
+Prețurile sunt comparate separat pentru fiecare categorie de carburant.
+
+Aplicația clasifică prețurile astfel:
+
+- `low` - preț mic, afișat cu verde;
+- `medium` - preț mediu, afișat cu portocaliu;
+- `high` - preț mare, afișat cu roșu.
+
+Această clasificare permite interfeței aplicației să evidențieze rapid benzinăriile cu prețuri mai avantajoase.
+
+## Identificarea celei mai apropiate benzinării
+
+Aplicația folosește locația utilizatorului pentru a căuta benzinăriile din raza selectată.
+
+Google Places identifică benzinăriile disponibile, iar Google Routes calculează distanța rutieră până la acestea.
+
+Rezultatele sunt apoi sortate crescător după distanță, astfel încât prima benzinărie din răspuns să fie cea mai apropiată dintre rezultatele analizate.
+
+## Variabile de mediu
+
+Cheia Google Maps API este păstrată într-un fișier `.env` și nu este introdusă direct în cod.
+
+Exemplu:
+
+GOOGLE_MAPS_API_KEY=cheia_ta_google_maps
+
+Fișierul `.env` este exclus din Git prin `.gitignore` și nu trebuie încărcat pe GitHub.
+
+## Testare
+
+Testele proiectului pot fi rulate cu:
+
+pytest
+
+Testele verifică logica de calcul a distanței și funcționarea serviciului care combină datele Google Places și Google Routes.
+
+## Arhitectura aplicației
+
+Fluxul principal al aplicației este:
+
+Locația utilizatorului
+→ Google Places API
+→ benzinării + adrese + prețuri
+→ Google Routes API
+→ distanță + durată
+→ clasificarea prețurilor
+→ sortarea după distanță
+→ răspunsul API Fuel Finder
+
+În acest mod, Fuel Finder folosește Google Maps Platform atât pentru identificarea benzinăriilor și obținerea prețurilor disponibile, cât și pentru calcularea distanței reale de deplasare.

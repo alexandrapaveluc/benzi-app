@@ -1,22 +1,37 @@
-from app.clients.pretcarburant_client import PretCarburantClient
-from app.config import settings
-from app.models.fuel_prices import (
-    DieselPrices,
-    FuelPrices,
-    GasolinePrices,
+from app.clients.google_places_client import (
+    GooglePlacesClient,
 )
+from app.clients.google_routes_client import (
+    GoogleRoutesClient,
+)
+from app.config import settings
 from app.models.location import UserLocation
 from app.models.station import FuelStation
-from app.models.station_response import StationSearchResponse
-from app.services.distance_service import DistanceService
+from app.models.station_response import (
+    StationSearchResponse,
+)
+from app.services.distance_service import (
+    DistanceService,
+)
+from app.services.google_address_service import (
+    GoogleAddressService,
+)
+from app.services.google_fuel_price_service import (
+    GoogleFuelPriceService,
+)
+from app.services.price_classification_service import (
+    PriceClassificationService,
+)
 
 
 class StationService:
     def __init__(self):
-        self.client = PretCarburantClient(
-            base_url=settings.PRET_CARBURANT_BASE_URL,
-            api_key=settings.PRET_CARBURANT_API_KEY,
-            timeout=settings.API_TIMEOUT_SECONDS,
+        self.google_places_client = (
+            GooglePlacesClient()
+        )
+
+        self.google_routes_client = (
+            GoogleRoutesClient()
         )
 
     def search_nearby_stations(
@@ -25,106 +40,190 @@ class StationService:
         radius_km: float,
     ) -> StationSearchResponse:
 
-        data = self.client.get_stations(
-            latitude=location.latitude,
-            longitude=location.longitude,
-            radius_km=radius_km,
+        # 1. Google Places:
+        # benzinarii + adrese + preturi.
+        google_stations = (
+            self.google_places_client.get_stations(
+                latitude=location.latitude,
+                longitude=location.longitude,
+                radius_km=radius_km,
+                max_results=settings.MAX_STATIONS,
+            )
         )
 
-        raw_stations = data.get("statii", [])
+        # 2. Eliminam rezultatele fara coordonate.
+        valid_stations = []
 
-        stations_by_id = {}
+        for station in google_stations:
+            google_location = station.get(
+                "location",
+                {},
+            )
 
-        for raw_station in raw_stations:
-            station_id = str(raw_station.get("id"))
+            latitude = google_location.get(
+                "latitude"
+            )
 
-            if station_id not in stations_by_id:
-                stations_by_id[station_id] = {
-                    "id": station_id,
-                    "brand": raw_station.get("brand"),
-                    "address": raw_station.get("adresa"),
-                    "city": raw_station.get("oras"),
-                    "county": raw_station.get("judet"),
-                    "latitude": raw_station.get("lat"),
-                    "longitude": raw_station.get("lng"),
-                    "gasoline_standard": None,
-                    "gasoline_premium": None,
-                    "diesel_standard": None,
-                    "diesel_premium": None,
-                }
+            longitude = google_location.get(
+                "longitude"
+            )
 
-            fuel_type = raw_station.get("tip")
-            price = raw_station.get("pret")
+            if (
+                latitude is None
+                or longitude is None
+            ):
+                continue
 
-            if fuel_type == "benzina_standard":
-                stations_by_id[station_id]["gasoline_standard"] = price
+            valid_stations.append(station)
 
-            elif fuel_type == "benzina_premium":
-                stations_by_id[station_id]["gasoline_premium"] = price
+        # 3. Pregatim destinatiile pentru Routes.
+        destinations = [
+            {
+                "latitude": station[
+                    "location"
+                ]["latitude"],
+                "longitude": station[
+                    "location"
+                ]["longitude"],
+            }
+            for station in valid_stations
+        ]
 
-            elif fuel_type == "motorina_standard":
-                stations_by_id[station_id]["diesel_standard"] = price
+        # 4. Google Routes:
+        # distanta si durata cu masina.
+        routes = {}
 
-            elif fuel_type == "motorina_premium":
-                stations_by_id[station_id]["diesel_premium"] = price
+        if destinations:
+            try:
+                routes = (
+                    self.google_routes_client
+                    .get_route_matrix(
+                        origin_latitude=(
+                            location.latitude
+                        ),
+                        origin_longitude=(
+                            location.longitude
+                        ),
+                        destinations=destinations,
+                    )
+                )
+
+            except RuntimeError:
+                # Fallback: distanta geometrica.
+                routes = {}
 
         stations = []
 
-        for station_data in stations_by_id.values():
-            latitude = station_data["latitude"]
-            longitude = station_data["longitude"]
+        # 5. Construim fiecare benzinarie.
+        for index, google_station in enumerate(
+            valid_stations
+        ):
+            google_location = google_station[
+                "location"
+            ]
 
-            if latitude is None or longitude is None:
-                continue
-
-            distance = DistanceService.calculate_distance_km(
-                location.latitude,
-                location.longitude,
-                latitude,
-                longitude,
+            latitude = float(
+                google_location["latitude"]
             )
 
-            brand = station_data["brand"]
-            city = station_data["city"]
+            longitude = float(
+                google_location["longitude"]
+            )
 
-            if brand and city:
-                name = f"{brand} - {city}"
-            elif brand:
-                name = brand
+            display_name = google_station.get(
+                "displayName",
+                {},
+            )
+
+            name = (
+                display_name.get("text")
+                or "Benzinarie"
+            )
+
+            address = google_station.get(
+                "formattedAddress"
+            )
+
+            address_data = (
+                GoogleAddressService
+                .extract_address(
+                    google_station
+                )
+            )
+
+            prices = (
+                GoogleFuelPriceService
+                .extract_prices(
+                    google_station
+                )
+            )
+
+            route = routes.get(index)
+
+            if route:
+                distance_km = route[
+                    "distance_km"
+                ]
+
+                duration_minutes = route[
+                    "duration_minutes"
+                ]
+
             else:
-                name = "Benzinarie"
+                distance_km = (
+                    DistanceService
+                    .calculate_distance_km(
+                        location.latitude,
+                        location.longitude,
+                        latitude,
+                        longitude,
+                    )
+                )
+
+                distance_km = round(
+                    distance_km,
+                    2,
+                )
+
+                duration_minutes = None
 
             station = FuelStation(
-                station_id=station_data["id"],
+                station_id=google_station.get(
+                    "id",
+                    f"google-{index}",
+                ),
                 name=name,
-                brand=brand,
-                address=station_data["address"],
-                city=city,
-                county=station_data["county"],
+                brand=name,
+                address=address,
+                city=address_data["city"],
+                county=address_data["county"],
+                country=address_data["country"],
                 latitude=latitude,
                 longitude=longitude,
-                distance_km=round(distance, 2),
-                prices=FuelPrices(
-                    gasoline=GasolinePrices(
-                        standard=station_data["gasoline_standard"],
-                        premium=station_data["gasoline_premium"],
-                    ),
-                    diesel=DieselPrices(
-                        standard=station_data["diesel_standard"],
-                        premium=station_data["diesel_premium"],
-                    ),
+                distance_km=distance_km,
+                duration_minutes=(
+                    duration_minutes
                 ),
+                prices=prices,
             )
 
             stations.append(station)
 
-        stations.sort(key=lambda station: station.distance_km)
+        # 6. Clasificam preturile.
+        PriceClassificationService.classify_stations(
+            stations
+        )
 
-        stations = stations[:settings.MAX_STATIONS]
+        # 7. Cea mai apropiata statie prima.
+        stations.sort(
+            key=lambda station: (
+                station.distance_km
+            )
+        )
 
         return StationSearchResponse(
             location=location,
             radius_km=radius_km,
-            price_data_updated_at=data.get("actualizat_la"),
+            price_data_updated_at=None,
             stations=stations,
         )

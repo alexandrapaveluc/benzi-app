@@ -1,14 +1,20 @@
 from pydantic import BaseModel
 
 
+class FuelPrice(BaseModel):
+    value: float | None = None
+    level: str | None = None
+    updated_at: str | None = None
+
+
 class GasolinePrices(BaseModel):
-    standard: float | None = None
-    premium: float | None = None
+    standard: FuelPrice
+    premium: FuelPrice
 
 
 class DieselPrices(BaseModel):
-    standard: float | None = None
-    premium: float | None = None
+    standard: FuelPrice
+    premium: FuelPrice
 
 
 class FuelPrices(BaseModel):
